@@ -1,0 +1,23 @@
+<?php
+
+// Usuarios y passwds para los servicios SOAP de @EMTmadrid
+// Cambiar según sea necesario tras pedir autorización
+
+
+$auth = array();
+
+// Tiempos de llegada
+$auth['ServiceGEO']['idClient'] = 'FIXME';
+$auth['ServiceGEO']['passKey'] = '12345678-ABCD-ABCD-ABCD-12345678ABCD';
+
+// Mapa de línea. FIXME: depender de GTFS parseado en local
+$auth['ServiciosMapaWeb']['idClient'] = 'FIXME';
+$auth['ServiciosMapaWeb']['passKey'] = '12345678-ABCD-ABCD-ABCD-12345678ABCD';
+
+
+
+
+
+
+
+

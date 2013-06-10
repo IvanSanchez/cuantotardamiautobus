@@ -1,0 +1,159 @@
+﻿
+body
+{
+	font-family: DejaVu Sans, Arial, Sans Serif;
+	margin:0;
+	padding: 0;
+}
+
+html, body, #map {
+    height: 100%;
+}
+
+
+table.timetable
+{
+	border: grey 1px solid;
+
+	font-size:100%;
+	border-collapse:collapse;
+}
+
+table.timetable td, table.timetable th
+{
+	border: grey 1px solid;
+	border-collapse:collapse;
+}
+
+table.timetable td.destino
+{
+	font-size:75%;
+}
+
+table.timetable td.numero
+{
+	text-align: right;
+}
+
+.leaflet-control-zoom
+{
+	margin-top: 50px;
+}
+
+
+.statusbar
+{
+	position:absolute;
+	top:10;
+	left:50;
+	z-index:10;
+
+/* 	text-shadow: white 0 0 0.4em, white 0.1em 0.1em 0.2em; */
+
+	background: rgba(0,0,0, 0.25);
+
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	border-radius: 7px;
+
+	padding: 3px;
+
+	padding-left:6px;
+}
+
+.statusbar span
+{
+	background: rgba(255, 255, 255, 0.85);
+	margin: 3px 3px 3px 0;
+	padding: 3px;
+}
+
+
+.backbutton
+{
+	background: rgba(224, 224, 224, 0.85);
+	padding: 3px;
+}
+
+.statusbar span, .backbutton
+{
+
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+
+/* 	margin-bottom:5px; */
+
+	white-space:nowrap;
+	line-height: 2;
+}
+
+
+.clickable, a
+{
+	cursor:pointer;
+	color: navy;
+	text-decoration: none;
+}
+
+#overlay-about, #overlay, #overlay-background
+{
+	padding:2em;
+/* 	overflow:scroll; */
+	background:white;
+	display:none;
+	position:absolute;
+	top:0;
+/* 	bottom:0; */
+	right:0;
+	left:0;
+}
+
+table#tabla_linea
+{
+	font-size:75%;
+	border-spacing:0;
+}
+
+table#tabla_linea tr
+{
+	margin:0;
+	padding:0;
+}
+
+table#tabla_linea td
+{
+	margin:0;
+	padding:0;
+	white-space:nowrap;
+}
+
+table#tabla_linea td.grafico
+{
+	background:url('img/20px-BSicon_STR.svg.png');
+}
+
+table#tabla_linea td.nombre_sentido_1
+{
+	text-align:right;
+	margin-right:.5em;
+}
+
+table#tabla_linea td.tiempo
+{
+	min-width:5em;
+	text-align:center;
+}
+
+
+div#tooltip_mapa_linea
+{
+	min-height:2em;
+	padding-top:.5em;
+	text-align:center;
+}
+
+div#tooltip_mapa_linea small
+{
+	font-size:50%;
+}
