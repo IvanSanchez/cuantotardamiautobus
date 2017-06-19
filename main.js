@@ -84,6 +84,27 @@ fetchEmt('/bus/GetNodesLines.php', {}).then(function(data){
 	}
 
 	displayStops();
+	
+	var stopHash = window.location.hash.indexOf('parada=');
+	if (stopHash !== -1) {
+		var stopId = Number(window.location.hash.substr(stopHash + 7));
+		for (var j=0, l=stopsData.length; j<l; j++) {
+			if (stopsData[j].node === stopId) {
+				onStopClick(stopsData[j])({target: stopMarkers[j]});
+
+				map.setView([stopsData[j].latitude, stopsData[j].longitude], 18);
+
+				// Espeeera un momentito. Si centramos la parada, no se va a ver bien en dispositivos móviles. ¿Qué tal si la dejamos a 3/4 de altura, para que se vea más popup?
+				L.Util.requestAnimFrame( function(){
+					var y = window.innerHeight * 0.25;
+					var x = window.innerWidth * 0.5;
+					map.setView( map.containerPointToLatLng( new L.Point(x,y,true) ) , 18);
+				});
+				return;
+			}
+		}
+	}
+	
 });
 
 map.on('zoomend moveend', displayStops);
@@ -146,12 +167,15 @@ function onStopClick(stopData) {
 function queryAndDisplayArrivals(stopId) {
 	fetchEmt('/geo/GetArriveStop.php', { idStop: stopId }).then(function(data){
 // 		console.log(data);
+		// Prevent displaying arrivals in case of race conditions
+		if (currentStopId !== stopId) { return; }
+		
 		var text;
 
-		if (!data.arrives.length) {
+		if (data[0] === false || !data.arrives.length) {
 			text = "Actualmente no pasan autobuses por " + currentStopName  + " (" + currentStopId + ")";
 		} else {
-			text = "Autobuses que pasan por " + currentStopName + " (" + currentStopId + "):<table class='timetable'><tr><th>Línea</th><th>Destino</th><th>Tiempo</th></tr>";
+			text = "Autobuses que pasan por<br/>" + currentStopName + " (" + currentStopId + "):<table class='timetable'><tr><th>Línea</th><th>Destino</th><th>Tiempo</th></tr>";
 			var arrivals = data.arrives;
 
 			for (var i=0,l=arrivals.length; i<l; i++) {
@@ -181,29 +205,30 @@ function queryAndDisplayArrivals(stopId) {
 				"</td></tr>";
 			}
 			text += "</table>";
+		}
 
-
-
-			if (window.outerWidth > 600) {
-				// 					text += "<div class='clickable' onclick='window.location = \"http://www.cuantotardamiautobus.es/createqr.php?ciudad=madrid&parada="
-				// 					+ currentStopId + "\";'>Crear código QR</div>";
+		if (window.outerWidth > 600) {
+			// 					text += "<div class='clickable' onclick='window.location = \"http://www.cuantotardamiautobus.es/createqr.php?ciudad=madrid&parada="
+			// 					+ currentStopId + "\";'>Crear código QR</div>";
 
 // 				$('.leaflet-popup-content').html(text);
-				currentPopup.setContent(text);
-			} else {
-				$('#overlay').empty();
-				$('#overlay').html("<div><span onclick=\"$('#overlay').hide(); $('#overlay-background').hide(); $('.leaflet-control').show(); currentStopId = undefined;\" class='clickable backbutton'>Volver al mapa</span></div>" + text);
-				$('#overlay-background').show();
-				$('#overlay').show();
-				$('.leaflet-control').hide();
+			currentPopup.setContent(text);
+		} else {
+			$('#overlay').empty();
+			$('#overlay').html("<div><span onclick=\"$('#overlay').hide(); $('#overlay-background').hide(); $('.leaflet-control').show(); currentStopId = undefined;\" class='clickable backbutton'>Volver al mapa</span></div>" + text);
+			$('#overlay-background').show();
+			$('#overlay').show();
+			$('.leaflet-control').hide();
 
-				// Se cierra el popup del mapa, y se vuelve a poner el hash (que se ha quitado al cerrar el popup)
-				tempId = currentStopId;
-				map.closePopup();
-				currentStopId = tempId;
-			}
-			window.location.hash = "parada=" + currentStopId;
+			// Se cierra el popup del mapa, y se vuelve a poner el hash (que se ha quitado al cerrar el popup)
+			tempId = currentStopId;
+			map.closePopup();
+			currentStopId = tempId;
 		}
+		window.location.hash = "parada=" + currentStopId;
+		
+		// ...and repeat.
+		setTimeout(queryAndDisplayArrivals.bind(this, stopId), 30000);
 	});
 }
 
