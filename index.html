@@ -1,0 +1,102 @@
+<!DOCTYPE text/html>
+<html>
+<head>
+<title>¿Cuánto tarda mi autobús?</title>
+
+<link type="text/plain" rel="author" href="http://ivan.sanchezortega/humans.txt" />
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css"
+   integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ=="
+   crossorigin=""/>
+
+<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet-src.js"
+   integrity="sha512-WXoSHqw/t26DszhdMhOXOkI7qCiv5QWXhH9R7CgvgZMHz1ImlkVQ3uNsiQKu5wwbbxtPzFXd1hK4tzno2VqhpA=="
+   crossorigin=""></script>
+<!-- <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"
+   integrity="sha512-A7vV8IFfih/D732iSSKi20u/ooOfj/AGehOKq0f4vLT1Zr2Y+RX7C+w8A1gaSasGtRUZpF/NZgzSAu4/Gc41Lg=="
+   crossorigin=""></script>-->
+
+<script
+	src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+	integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
+	crossorigin="anonymous"></script>
+
+<!-- <script src="linea.js" type="text/javascript"></script> -->
+
+<link rel="stylesheet" href="main.css" />
+
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="description" content="Consulta cuánto tarda el próximo autobús de la EMT Madrid en tu zona." />
+<link rel="icon" type="image/png" href="../img/logo_v1_rojo_128px.png" />
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="../img/logo_v1_rojo_114px.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="../img/logo_v1_rojo_72px.png">
+<link rel="apple-touch-icon-precomposed" href="../img/logo_v1_rojo_57px.png">
+
+
+
+</head>
+<body>
+
+<div id='map' style='position:absolute; top:0; bottom:0; left:0; right:0;'></div>
+
+<div class='statusbar'>
+<span id='zoomtip'>Haga zoom para ver paradas</span>
+<span id='search' class='clickable' onclick="$('#overlay').show(); $('#overlay-background').show(); $('.leaflet-control').hide(); mostrar_buscar();" >Buscar</span>
+<span id='about' class='clickable' onclick="$('#overlay-about').show(); $('#overlay-background').show(); $('.leaflet-control').hide();" >Acerca de</span>
+</div>
+
+<div id='overlay-background' style='z-index:19; bottom:0;'></div>
+
+<div id='overlay' style='z-index:20;'></div>
+
+<div id='overlay-about' style='z-index:30;'>
+
+<script src="main.js" type="text/javascript"></script>
+
+<div><span onclick="$('#overlay-about').hide(); $('#overlay-background').hide(); $('.leaflet-control').show();" class='clickable backbutton'>Volver al mapa</span></div>
+
+
+<h2>¿Cuánto tarda mi autobús?</h2>
+
+<p><a href='http://www.cuantotardamiautobus.es'>¿Cuánto tarda mi autobús?</a> es una web diseñada para ver los tiempos de espera de los autobuses de la <a href='http://www.emtmadrid.es/'>EMT de Madrid</a>.</p>
+
+<p>La web es muy sencilla de usar: tan sólo hay que hacer zoom sobre la zona de Madrid en la que uno se encuentra, y pulsar sobre una parada; en unos segundos podrá ver cuánto tiempo falta para que pase el siguiente autobús.</p>
+
+
+<h2>¿Porqué usar <a href='http://www.cuantotardamiautobus.es'>www.cuantotardamiautobus.es</a>?</h2>
+
+<p>Los usuarios de la red de autobuses de la EMT posiblemente conozcan <a href='http://www.emtmadrid.es/mapaweb/emt.html'>NavegaPorMadrid</a>, sobre el cual también se pueden ver los tiempos de espera. Y tienen la información actualizada, así que ¿Por qué usar <a href='http://www.cuantotardamiautobus.es'>www.cuantotardamiautobus.es</a>?</p>
+
+<p>La respuesta es fácil: <a href='http://www.cuantotardamiautobus.es'>www.cuantotardamiautobus.es</a> ha sido realizado por y para un usuario de autobús, que sabe lo que realmente hace falta:</p>
+
+<ul>
+<li>Interfaz adaptada a dispositivos móviles. En otras palabras, mostrar sólo lo que hace falta. Ya sé el recorrido de la línea que tomo todos los días, gracias, y no necesito leer la información corporativa, gracias, ahora dime cuánto falta para el siguiente bus.</li>
+<li>Tecnología adaptada a dispositivos móviles (HTML5 y JavaScript en vez de Flash). Cada vez que alguien desarrolla una aplicación en Flash, el Monstruo de Espagueti Volador mata un gatito. Pensad en los gatitos.</li>
+<li>Geolocalización. Si se ve desde un teléfono móvil o una tableta con GPS, muestra automáticamente las paradas que están cerca. Esto significa poder ver los buses <em>antes</em> de llegar a la parada, y no tener que llegar a la parada, leer el número, mandar un SMS gastando dinero, y esperar.</li>
+<li>Muestra todos los buses que pasan por las paradas cercanas. Muy útil en intercambiadores.</li>
+</ul>
+
+
+<h2>Si quieres ver a menudo una parada...</h2>
+
+<p>... entonces tenemos un par de truquitos para tí.</p>
+
+<p>El primero es lo que se llama un permalink a una parada. Al pulsar sobre una parada para ver sus autobuses, notarás que la URL de la página cambia, incluyendo el número de la parada, como por ejemplo: <code>http://www.cuantotardamiautobus.es/#parada=3373</code>. Si añades esa URL a tus favoritos, automáticamente verás los autobuses de (en este caso) la parada 3373.</p>
+
+<p>El segundo es lo que se llama un permalink a coordenadas. En la esquina inferior izquierda hay un enlace que pone "Permalink". Al pulsarlo, verás que URL de la página contiene ahora las coordenadas (latitud y longitud) de la zona que estabas viendo, como por ejemplo <code>http://www.cuantotardamiautobus.es/#zoom=18&amp;lat=40.428059&amp;lon=-3.702173</code>.</p>
+
+<p>Recuerda que cuando usas un permalink, la geolocalización automática se desactiva.</p>
+
+
+<h2>Legal</h2>
+
+<p>Los mapas vienen de <a href="http://openstreetmap.org">OpenStreetMap</a>, aunque el estilo gráfico es cortesía de <a href="http://www.thunderforest.com/">Andy Allan</a>. Para las búsquedas de calles o lugares se usa <a href='http://wiki.openstreetmap.org/wiki/Nominatim'>Nominatim</a>, de nuevo con datos de <a href="http://openstreetmap.org">OpenStreetMap</a>.</p>
+
+<p>Los datos sobre tiempos de espera de los autobuses provienen de la <a href='http://www.emtmadrid.es/'>EMT</a>, dentro de lo que ellos (<a href='http://opendefinition.org/okd/espanol/'>erroneamente</a>) llaman "<a href='http://www.emtmadrid.es/movilidad20/opendata.aspx'>Open Data</a>". Si los tiempos de llegada son inexactos, hablad con ellos. Si se cae el sistema y en todas las paradas dice que no pasan autobuses, hablad con ellos.</p>
+
+<a href='http://www.cuantotardamiautobus.es'>www.cuantotardamiautobus.es</a> es obra de Iván Sánchez Ortega (<a href='mailto:ivan@sanchezortega.es'>ivan@sanchezortega.es</a>, <a href='https://twitter.com/RealIvanSanchez'> @RealIvanSanchez</a>). La receta es PHP, SOAP, JSON, JavaScript, algo de HTML5, <a href='http://leafletjs.com/'>Leaflet</a> y sal al gusto.</p>
+
+</div>
+</body>
+</html>
