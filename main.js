@@ -214,5 +214,36 @@ map.on('popupclose', function(){
 
 
 
+setInterval( function(data) {
+	$('.countdown').each( function(i) {
+		var time = this.innerHTML;
+
+		separatorPosition = time.search(":");
+		var minutes = parseInt(time.slice(0,separatorPosition));
+		var seconds = parseInt(time.slice(separatorPosition+1));
+
+		seconds += minutes * 60;
+
+		seconds -= 1;
+
+		if (seconds <= 0) {
+// 				this.className = "numero";	// Quitar la clase "countdown" == la cuenta atrás no se ejecutará para esta celda
+			$(this).removeClass('countdown');	// Quitar la clase "countdown" == la cuenta atrás no se ejecutará para esta celda
+			this.innerHTML = "0:00";
+		} else if (minutes >= 20 || isNaN(seconds) || isNaN(minutes)) {	// Vamos a evitar que la gente vea un NaN:NaN...
+// 				this.className = "numero";	// Quitar la clase "countdown" == la cuenta atrás no se ejecutará para esta celda
+			$(this).removeClass('countdown');	// Quitar la clase "countdown" == la cuenta atrás no se ejecutará para esta celda
+		} else {
+			minutes = Math.floor(seconds / 60);
+			seconds = seconds % 60;
+			if (seconds < 10) {
+				seconds = "0" + seconds;
+			}
+
+			this.innerHTML = minutes + ":" + seconds;
+		}
+	} );
+} , 1075);	// This is very, very evil.
+
 
 
